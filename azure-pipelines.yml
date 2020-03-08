@@ -26,6 +26,12 @@ steps:
     testResultsFormat: 'JUnit'
     testResultsFiles: '**/TEST-*.xml'  
 
+- task: PublishCodeCoverageResults@1
+  inputs:
+    codeCoverageTool: Cobertura
+    summaryFileLocation: '(System.DefaultWorkingDirectory)/**/*coverage.xml'
+    reportDirectory: '(System.DefaultWorkingDirectory)/**/*coverage'
+
 - task: PublishPipelineArtifact@1
   inputs:
     targetPath: '$(Pipeline.Workspace)'
