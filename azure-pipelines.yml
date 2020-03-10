@@ -32,7 +32,8 @@ steps:
     summaryFileLocation: '(System.DefaultWorkingDirectory)/**/*coverage.xml'
     reportDirectory: '(System.DefaultWorkingDirectory)/**/*coverage'
 
-- task: PublishPipelineArtifact@1
+- task: Docker@2
   inputs:
-    targetPath: '$(Pipeline.Workspace)'
-    publishLocation: 'pipeline'
+    repository: 'aksDemoRegistryTest'
+    command: 'buildAndPush'
+    Dockerfile: '**/Dockerfile'
