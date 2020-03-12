@@ -42,13 +42,18 @@ steps:
     docker build -f Dockerfile -t $(dockerId)/$(imageName) .
 
 - task: Docker@2
-  displayName: Login to ACR
+  displayName: login
   inputs:
+    containerRegistry: testService12March
     command: login
-    containerRegistry: demoserviceCtest
 
 - task: Docker@2
-  displayName: Build and Push
+  displayName: buildAndPush
   inputs:
-    command: buildAndPush
-    repository: someUser/contoso
+    containerRegistry: testService12March
+
+- task: Docker@2
+  displayName: logout
+  inputs:
+    containerRegistry: testService12March
+    command: logout
