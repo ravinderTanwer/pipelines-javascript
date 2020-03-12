@@ -10,7 +10,7 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  imageName: 'nodejssample:$(Build.BuildId)'
+  imageName: 'dpe1:$(Build.BuildId)'
 
 steps:
 - task: NodeTool@0
@@ -52,6 +52,3 @@ steps:
   inputs:
     command: buildAndPush
     repository: someUser/contoso
-    tags: |
-      tag1
-      tag2
