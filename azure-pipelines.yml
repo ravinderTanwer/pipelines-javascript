@@ -9,6 +9,9 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
+variables:
+  imageName: 'nodejssample:$(Build.BuildId)'
+
 steps:
 - task: NodeTool@0
   inputs:
@@ -18,8 +21,11 @@ steps:
 - script: |
     npm install
     npm run build
+  displayName: 'npm install and build'
+
+- script: |
     npm test
-  displayName: 'npm install build and test'
+  displayName: 'npm test'
 
 - task: PublishTestResults@2
   inputs:
@@ -32,8 +38,20 @@ steps:
     summaryFileLocation: '(System.DefaultWorkingDirectory)/**/*coverage.xml'
     reportDirectory: '(System.DefaultWorkingDirectory)/**/*coverage'
 
+-script: |
+    docker build -f Dockerfile -t $(dockerId)/$(imageName) .
+
 - task: Docker@2
+  displayName: Login to ACR
   inputs:
-    repository: 'aksDemoRegistryTest'
-    command: 'buildAndPush'
-    Dockerfile: '**/Dockerfile'
+    command: login
+    containerRegistry: dockerRegistryServiceConnection1
+
+- task: Docker@2
+  displayName: Build and Push
+  inputs:
+    command: buildAndPush
+    repository: someUser/contoso
+    tags: |
+      tag1
+      tag2
